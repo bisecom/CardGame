@@ -1,0 +1,29 @@
+.mainTable{
+    background-color: gray;
+    border: red 1px solid;
+}
+
+.dock{
+    background-color: yellow;
+    border: red 1px solid;
+    position: relative;
+    child-align: middle;
+}
+
+.mainRaw{
+    height: 45vh;
+}
+
+.display{
+    height: 8vh;
+    font-size: 3vw;
+    background-color: gainsboro;
+}
+
+.stepperField{
+
+}
+
+.answererField{
+
+}

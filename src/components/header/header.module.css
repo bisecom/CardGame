@@ -1,0 +1,9 @@
+.myHeader{
+    background-color: green;
+    border: red 1px solid;
+    height: 14vh;
+}
+h1{
+    font-size: 7vw;
+    text-align: center;
+}

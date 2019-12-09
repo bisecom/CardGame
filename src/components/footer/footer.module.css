@@ -1,0 +1,14 @@
+.playerTable{
+    background-color: green;
+    border: red 1px solid;
+
+}
+
+.pcTable{
+    background-color: darkolivegreen;
+    border: red 1px solid;
+}
+
+.footerDiv{
+    height: 41vh;
+}

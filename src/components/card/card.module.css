@@ -1,0 +1,11 @@
+.card1{
+     width: 80px;
+     height: 120px;
+     border: red 2px solid;
+     border-radius: 10px;
+     padding: 5px;
+     color: yellow;
+     background-color: lightcoral;
+     position: absolute;
+ }
+
