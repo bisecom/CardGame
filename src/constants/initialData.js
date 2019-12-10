@@ -14,7 +14,17 @@ export const cardsArray = [
     {id: 8, rank: '8', suits: 'diamonds', isCoveredCard: false, belongToPlayer: false},
     {id: 9, rank: '8', suits: 'hearts', isCoveredCard: false, belongToPlayer: false},
     {id: 10, rank: '8', suits: 'clubs', isCoveredCard: false, belongToPlayer: false},
-    {id: 11, rank: '8', suits: 'spades', isCoveredCard: false, belongToPlayer: false}
+    {id: 11, rank: '8', suits: 'spades', isCoveredCard: false, belongToPlayer: false},
+
+    {id: 12, rank: '9', suits: 'diamonds', isCoveredCard: false, belongToPlayer: false},
+    {id: 13, rank: '9', suits: 'hearts', isCoveredCard: false, belongToPlayer: false},
+    {id: 14, rank: '9', suits: 'clubs', isCoveredCard: false, belongToPlayer: false},
+    {id: 15, rank: '9', suits: 'spades', isCoveredCard: false, belongToPlayer: false},
+
+    {id: 16, rank: '10', suits: 'diamonds', isCoveredCard: false, belongToPlayer: false},
+    {id: 17, rank: '10', suits: 'hearts', isCoveredCard: false, belongToPlayer: false},
+    {id: 18, rank: '10', suits: 'clubs', isCoveredCard: false, belongToPlayer: false},
+    {id: 19, rank: '10', suits: 'spades', isCoveredCard: false, belongToPlayer: false}
 
 ];
 
