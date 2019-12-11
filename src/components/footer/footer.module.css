@@ -1,12 +1,15 @@
 .playerTable{
     background-color: green;
     border: red 1px solid;
-
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .pcTable{
     background-color: darkolivegreen;
     border: red 1px solid;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .footerDiv{

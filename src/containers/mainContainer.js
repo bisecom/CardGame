@@ -13,10 +13,10 @@ class MainCont extends React.Component {
         super(props);
         this.state = {
             playerNextStep: true,
-            сardDeck: this.props.cards,
+            cardDeck: this.props.cards,
             workedOutCards: [],
             commonTable: [],
-            displayData: 'Hello Guys!',
+            displayData: 'Wellcome to Game!',
             playerTable: [],
             pcTable: [],
             isThrumpAvailable: false,
@@ -45,7 +45,7 @@ class MainCont extends React.Component {
     }
 
     handleOpenCardClick(){
-        let completeCardsDeck = this.state.сardDeck;
+        let completeCardsDeck = this.state.cardDeck;
         let thrumpCard;
         if(this.state.isThrumpAvailable) return;
         let randomCardIndex = Math.floor(Math.random() * completeCardsDeck.length);
@@ -54,7 +54,7 @@ class MainCont extends React.Component {
         thrumpCard = completeCardsDeck[randomCardIndex];
         completeCardsDeck.splice(randomCardIndex, 1);
         this.setState(state => ({
-            сardDeck: completeCardsDeck,
+            cardDeck: completeCardsDeck,
             thrumpCard: thrumpCard,
             isThrumpAvailable: true
         }));
@@ -66,26 +66,61 @@ class MainCont extends React.Component {
         let cardId = event.target.getAttribute('id');
         let playerCards = this.state.playerTable;
         let workingTable = this.state.commonTable;
-       // let cardIndex = playerCards.findIndex(x => x.id.toString() === cardId);
         let cardIndex = playerCards.map(e => e.id.toString()).indexOf(cardId).toString();
-        workingTable.push(playerCards[cardIndex]);
-        //console.log("cardId type of "+ typeof cardId + " cardId " + cardId+" playerCards "+ playerCards.length + " cardIndex "+cardIndex + " playerCards[0] id "+ playerCards[0].id+ " playerCards[1] id "+ playerCards[1].id);
-        playerCards.splice(cardIndex, 1);
-        this.setState(state => ({
-            commonTable: workingTable,
-            playerTable: playerCards,
-            playerNextStep: false
-        }));
-        this.pcAnswerStep();
+        if(this.state.playerNextStep) {
+            // let cardIndex = playerCards.findIndex(x => x.id.toString() === cardId);
+            workingTable.push(playerCards[cardIndex]);
+            //console.log("cardId type of "+ typeof cardId + " cardId " + cardId+" playerCards "+ playerCards.length + " cardIndex "+cardIndex + " playerCards[0] id "+ playerCards[0].id+ " playerCards[1] id "+ playerCards[1].id);
+            playerCards.splice(cardIndex, 1);
+            this.setState(state => ({
+                commonTable: workingTable,
+                playerTable: playerCards,
+                playerNextStep: false
+            }));
+            console.log("hello before this.pcAnswerStep();");
+            this.pcAnswerStep();
+        }
+        if(this.state.playerNextStep && this.state.displayData === "Player's Answer!") {
+            let playerAnswerRes = this.playerAnswerStep(playerCards[cardIndex], playerCards, workingTable);
+            if(playerAnswerRes === undefined){
+                return;
+            }else {
+                this.setState(state => ({
+                    commonTable: playerAnswerRes.commonTable,
+                    playerTable: playerAnswerRes.playerTable,
+                    playerNextStep: false
+                }));
+            }
+            this.pcAnswerStep();
+        }
     }
 
-    handleDisplayClick(){
-        console.log("hello from display");
-    }
+    handleDisplayClick(event){
+        let displayId = event.target.getAttribute('id');
+        if(displayId === 'Click card for tossing or here to stop..'){
+            let workingTblCards = this.state.commonTable;
+            workingTblCards = [];
+            let displayData = "Help Pc To Step, Click Here!";
+            let dataAfterAdding = this.addingCardsToPartiesTables(this.state.playerTable, this.state.pcTable, this.state.cardDeck, this.state.thrumpCard);
+                this.setState(state => ({
+                    cardDeck: dataAfterAdding.deck,
+                    commonTable: workingTblCards,
+                    playerTable: dataAfterAdding.playerCards,
+                    pcTable: dataAfterAdding.pcCards,
+                    thrumpCard: dataAfterAdding.thrump,
+                    displayData: displayData,
+                    playerNextStep: false
+                }));
+        }
+        if(displayId === 'Help Pc To Step, Click Here!'){
+            this.pcStep();
+        }
 
+        //console.log(displayId);
+    }
 
     giveCardsToPlayers(initialCardsQty){
-        let completeCardsDeck = this.state.сardDeck;
+        let completeCardsDeck = this.state.cardDeck;
         let plrTblCards = this.state.playerTable;
         let pcTblCards = this.state.pcTable;
 
@@ -104,7 +139,7 @@ class MainCont extends React.Component {
             this.setState(state => ({
                 playerTable: plrTblCards,
                 pcTable: pcTblCards,
-                сardDeck: completeCardsDeck,
+                cardDeck: completeCardsDeck,
                 playerNextStep: true
             }));
 
@@ -123,7 +158,7 @@ class MainCont extends React.Component {
         let notCoveredCardIndex = workingTable.map(e => e.isCoveredCard.toString()).indexOf('false');
         let rankIndex = this.getCardIndex(workingTable[notCoveredCardIndex]);
         //    check to answer among usual cards
-            for(let i = 0; i < pcSortedCards.length; i++){
+        for(let i = 0; i < pcSortedCards.length; i++){
             let pcCardRankIndex = this.getCardIndex(pcSortedCards[i]);
             console.log("rankIndex " + rankIndex + "pcCardRankIndex" +pcCardRankIndex);
             if(pcCardRankIndex > rankIndex && workingTable[notCoveredCardIndex].suits === pcSortedCards[i].suits){
@@ -169,7 +204,38 @@ class MainCont extends React.Component {
             pcTable: pcTblCards,
             playerNextStep: true
         }));
+
+        if(pcAnswered){
+            this.setState(state => ({
+                displayData: 'Click card for tossing or here to stop..'
+            }));
+        }
     }
+//Logic should be rechecked
+    playerAnswerStep(clickedCard_, playerCards_, commonTableCards_){
+        let workingTable = commonTableCards_;
+        let playerCards = playerCards_;
+        let clickedCard = clickedCard_;
+
+        let notCoveredCardIndex = workingTable.map(e => e.isCoveredCard.toString()).indexOf('false');
+        let rankIndexNotCovered = this.getCardIndex(workingTable[notCoveredCardIndex]);
+        let rankIndexClicked = this.getCardIndex(clickedCard);
+
+        if(clickedCard.suits === workingTable[notCoveredCardIndex].suits && rankIndexClicked > rankIndexNotCovered ||
+            clickedCard.suits === this.state.thrumpCard.suits && rankIndexClicked < rankIndexNotCovered &&
+            workingTable[notCoveredCardIndex].suits !== this.state.thrumpCard.suits){
+
+            workingTable[notCoveredCardIndex].isCoveredCard = true; workingTable[notCoveredCardIndex].belongToPlayer = false;
+            clickedCard.isCoveredCard = true; clickedCard.isCoveredCard.belongToPlayer = false;
+            workingTable.push(clickedCard);
+            let cardIndex = playerCards.map(e => e.id).indexOf(clickedCard.id);
+            playerCards.splice(cardIndex, 1);
+        return {playerTable: playerCards, commonTable: workingTable};
+
+        }else{return;}
+
+    }
+
     //sort cards to beat by lowest possible
     sortedCards(cardsToSort) {
         return cardsToSort.sort(function (a, b) {
@@ -188,38 +254,47 @@ class MainCont extends React.Component {
         let workingTable = this.state.commonTable;
         let pcTblCards = this.state.pcTable;
         let pcSortedCards = this.sortedCards(pcTblCards);
-
+        let displayData = "Player's Answer!";
         workingTable.push(pcSortedCards[0]);
         pcSortedCards.splice(0, 1);
         this.setState(state => ({
             commonTable: workingTable,
             pcTable: pcSortedCards,
+            displayData: displayData,
             playerNextStep: true
         }));
     }
-addingCardsToPartiesTables(playerCardsArray_, cardsDeck_, thrumpCard_, isPlayerAdding){
-    let playerCardsArray = playerCardsArray_; let cardsDeck = cardsDeck_; let thrumpCard = thrumpCard_;
-        while(playerCardsArray.length < 7 && cardsDeck.length > 0) {
-        let randomCardIndex = Math.floor(Math.random() * cardsDeck.length);
-            playerCardsArray.push(cardsDeck[randomCardIndex]);
-            if(isPlayerAdding){
-                playerCardsArray[playerCardsArray.length - 1].belongToPlayer = true;}else{
-                playerCardsArray[playerCardsArray.length - 1].belongToPlayer = false;
+    addingCardsToPartiesTables(playerCardsArray_, pcCardsArray_, cardsDeck_, thrumpCard_){
+        let playerCardsArray = playerCardsArray_; let pcCardsArray = pcCardsArray_; let cardsDeck = cardsDeck_; let thrumpCard = thrumpCard_;
+        while(playerCardsArray.length < 6 && cardsDeck.length > 0 || pcCardsArray.length < 6 && cardsDeck.length > 0) {
+            let randomCardIndex = Math.floor(Math.random() * cardsDeck.length);
+            if(cardsDeck[randomCardIndex] !== undefined) {
+                playerCardsArray.push(cardsDeck[randomCardIndex]);
+                playerCardsArray[playerCardsArray.length - 1].belongToPlayer = true;
+                cardsDeck.splice(randomCardIndex, 1);
             }
-            cardsDeck.splice(randomCardIndex, 1);
-    }
-    if(playerCardsArray.length < 7 && cardsDeck.length === 0){
-        playerCardsArray.push(thrumpCard);
-        if(isPlayerAdding){
-            playerCardsArray[playerCardsArray.length - 1].belongToPlayer = true;}else{
-            playerCardsArray[playerCardsArray.length - 1].belongToPlayer = false;
+            randomCardIndex = Math.floor(Math.random() * cardsDeck.length);
+            if(cardsDeck[randomCardIndex] !== undefined) {
+                pcCardsArray.push(cardsDeck[randomCardIndex]);
+                pcCardsArray[pcCardsArray.length - 1].belongToPlayer = false;
+                cardsDeck.splice(randomCardIndex, 1);
+            }
         }
-        thrumpCard = null;
-    }
-    return{deck: cardsDeck, playercards: playerCardsArray, thrump: thrumpCard};
-}
+        if(playerCardsArray.length < 6 && cardsDeck.length === 0 && thrumpCard !== ''){
+            playerCardsArray.push(thrumpCard);
+            playerCardsArray[playerCardsArray.length - 1].belongToPlayer = true;
+            thrumpCard = '';
+        }
+        if(pcCardsArray.length < 6 && cardsDeck.length === 0 && thrumpCard !== ''){
+            pcCardsArray.push(thrumpCard);
+            pcCardsArray[pcCardsArray.length - 1].belongToPlayer = false;
+            thrumpCard = '';
+        }
 
-tossingCardByPlayer(clickedCard, commonTableCards){
+        return{deck: cardsDeck, playerCards: playerCardsArray, pcCards:pcCardsArray, thrump: thrumpCard};
+    }
+
+    tossingCardByPlayer(clickedCard, commonTableCards){
         let cardRank = clickedCard.rank; let cardSuits = clickedCard.suits;
         for(let i = 0; i < commonTableCards.length; i++){
             if(commonTableCards[i].rank === cardRank){
@@ -227,7 +302,7 @@ tossingCardByPlayer(clickedCard, commonTableCards){
             }
         }
         return false;
-}
+    }
 
     tossingCardByPc(pcTableCards_, commonTableCards_){
         let workingTable = commonTableCards_;
@@ -249,9 +324,9 @@ tossingCardByPlayer(clickedCard, commonTableCards){
 
         return (
             <div className={`container-fluid ${stl.mainDiv}`}>
-            <Header />
-            <BodyComp startDeck={this.state.сardDeck} thrumpCard={this.state.thrumpCard} cardsInPlay={this.state.commonTable} deckOnClick={this.handleOpenCardClick} onClick={this.handleDisplayClick}/>
-            <FooterComp playerCards={this.state.playerTable} pcCards={this.state.pcTable} playerClick={this.handlePlayerMove}/>
+                <Header />
+                <BodyComp startDeck={this.state.cardDeck} thrumpCard={this.state.thrumpCard} cardsInPlay={this.state.commonTable} deckOnClick={this.handleOpenCardClick} onClick={this.handleDisplayClick} displayData={this.state.displayData}/>
+                <FooterComp playerCards={this.state.playerTable} pcCards={this.state.pcTable} playerClick={this.handlePlayerMove}/>
             </div>
         );
 

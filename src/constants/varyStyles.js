@@ -7,7 +7,8 @@ export let cardStartDeckClosed = {
     'color': 'yellow',
     'background-color': 'lightcoral',
     'position': 'absolute',
-    'top': '30%'
+    'top': '30%',
+    'font-size': '2vh'
 }
 
 export let openedCardStartDeck = {
@@ -20,7 +21,8 @@ export let openedCardStartDeck = {
     'background-color': 'lightcoral',
     'position': 'absolute',
     'top': '30%',
-    'left': '60%'
+    'left': '60%',
+    'font-size': '2vh'
 }
 
 export let openedCardPlayerTable = {
@@ -30,5 +32,6 @@ export let openedCardPlayerTable = {
     'border-radius': '1vh',
     'padding': '5px',
     'color': 'yellow',
-    'background-color': 'lightcoral'
+    'background-color': 'lightcoral',
+    'font-size': '2vh'
 }

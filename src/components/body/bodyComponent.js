@@ -7,7 +7,7 @@ export const BodyComp = (props) => {
     return (
         <div className={`row ${stl.mainRaw}`}>
             <BodyPlay cardsInPlay={props.cardsInPlay}/>
-            <BodyStart cardsDeck={props.startDeck} thrumpCard={props.thrumpCard} onClick={props.onClick} deckOnClick={props.deckOnClick}/>
+            <BodyStart cardsDeck={props.startDeck} thrumpCard={props.thrumpCard} onClick={props.onClick} deckOnClick={props.deckOnClick} displayData={props.displayData}/>
         </div>
     );
 }
