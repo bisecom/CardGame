@@ -7,5 +7,19 @@
      color: yellow;
      background-color: lightcoral;
      position: absolute;
+
  }
 
+.abovewRank{
+     margin-bottom: 0;
+}
+.aboveSuite{
+     margin-top: 0;
+}
+.belowSuite{
+     margin-bottom: 0;
+}
+
+.belowRank{
+     vertical-align: bottom;
+}

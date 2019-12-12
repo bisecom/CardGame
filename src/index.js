@@ -6,9 +6,9 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import MainCont from "./containers/mainContainer";
 import ReactAnimations from "./components/anime";
 import {Card} from "./components/card/card";
-import {cardsArray} from "./constants/initialData";
+import {cardsArray, displayData} from "./constants/initialData";
 
-ReactDOM.render(<MainCont cards={cardsArray}/>, document.getElementById('root'));
+ReactDOM.render(<MainCont cards={cardsArray} displayData={displayData}/>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

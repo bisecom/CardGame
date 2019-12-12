@@ -5,6 +5,7 @@ import {openedCardPlayerTable} from "../../constants/varyStyles";
 
 export const BodyPlay = (props) => {
     let allCardsInPlay = props.cardsInPlay;
+    console.log("allCardsInPlay from BodyPlay: "+allCardsInPlay);
     let stepperCards =[]; let answererCards = [];
     if(allCardsInPlay.length > 0 || allCardsInPlay !== undefined || allCardsInPlay !== null){
     for(let i=0; i<allCardsInPlay.length; i++){

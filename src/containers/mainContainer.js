@@ -6,7 +6,7 @@ import {FooterComp} from "../components/footer/footerComponent";
 import {Card} from "../components/card/card";
 import stl from "./main.module.css";
 import {cardStartDeckClosed, openedCardStartDeck} from "../constants/varyStyles";
-import {ranksArray} from "../constants/initialData";
+import {ranksArray, displayData} from "../constants/initialData";
 
 class MainCont extends React.Component {
     constructor(props) {
@@ -16,7 +16,7 @@ class MainCont extends React.Component {
             cardDeck: this.props.cards,
             workedOutCards: [],
             commonTable: [],
-            displayData: 'Wellcome to Game!',
+            displayData: this.props.displayData.greatings,
             playerTable: [],
             pcTable: [],
             isThrumpAvailable: false,
@@ -47,7 +47,7 @@ class MainCont extends React.Component {
     handleOpenCardClick(){
         let completeCardsDeck = this.state.cardDeck;
         let thrumpCard;
-        if(this.state.isThrumpAvailable) return;
+        if(this.state.isThrumpAvailable || this.state.displayData === displayData.greatings) return;
         let randomCardIndex = Math.floor(Math.random() * completeCardsDeck.length);
         //console.log("before "+this.state.thrumpCard);
         //thrumpCard = this.thrumpObjIntoCard(completeCardsDeck[randomCardIndex]);
@@ -56,7 +56,8 @@ class MainCont extends React.Component {
         this.setState(state => ({
             cardDeck: completeCardsDeck,
             thrumpCard: thrumpCard,
-            isThrumpAvailable: true
+            isThrumpAvailable: true,
+            displayData: this.props.displayData.playerStep
         }));
         this.giveCardsToPlayers(3, true);
     }
@@ -75,28 +76,101 @@ class MainCont extends React.Component {
             this.setState(state => ({
                 commonTable: workingTable,
                 playerTable: playerCards,
-                playerNextStep: false
+                playerNextStep: false,
+                displayData: this.props.displayData.pcAnswer
             }));
-            console.log("hello before this.pcAnswerStep();");
-            this.pcAnswerStep();
+            //console.log("hello before this.pcAnswerStep();");
+            //this.pcAnswerStep();
         }
-        if(this.state.playerNextStep && this.state.displayData === "Player's Answer!") {
+        console.log("handlePlayerMove workingTable " + workingTable);
+        if(this.state.playerNextStep && this.state.displayData === this.props.displayData.playerAnswer) {
             let playerAnswerRes = this.playerAnswerStep(playerCards[cardIndex], playerCards, workingTable);
             if(playerAnswerRes === undefined){
                 return;
             }else {
+                console.log("playerAnswerRes.commonTable " + playerAnswerRes.commonTable);
                 this.setState(state => ({
                     commonTable: playerAnswerRes.commonTable,
                     playerTable: playerAnswerRes.playerTable,
-                    playerNextStep: false
+                    playerNextStep: false,
+                    displayData: this.props.displayData.pcAnswer
                 }));
             }
-            this.pcAnswerStep();
+            //this.pcAnswerStep();
         }
     }
 
     handleDisplayClick(event){
         let displayId = event.target.getAttribute('id');
+        //console.log('hello ' + displayId);
+        switch(displayId){
+            case this.props.displayData.greatings://before start
+            {
+                this.setState(state => ({
+                    displayData: this.props.displayData.playStart
+                }));
+                break;
+            }
+            case this.props.displayData.pcAnswer://pc answer
+            {
+                this.pcAnswerStep();
+                /*
+                console.log("this.state.pcTable " + this.state.pcTable);
+                let dataAfterPcStep = this.addingCardsToPartiesTables(this.state.playerTable, this.state.pcTable, this.state.cardDeck, this.state.thrumpCard);
+                this.setState(state => ({
+                    cardDeck: dataAfterPcStep.deck,
+                    playerTable: dataAfterPcStep.playerCards,
+                    pcTable: dataAfterPcStep.pcCards,
+                    thrumpCard: dataAfterPcStep.thrump
+                }));
+                */
+                break;
+            }
+            case this.props.displayData.playerTossing:// complete round
+            {
+                //add condition for pc and player
+                let whomeStep = this.state.playerStep == true ? false : true;
+
+                let dataAfterAdding = this.addingCardsToPartiesTables(this.state.playerTable, this.state.pcTable, this.state.cardDeck, this.state.thrumpCard);
+                this.setState(state => ({
+                    cardDeck: dataAfterAdding.deck,
+                    commonTable: [],
+                    playerTable: dataAfterAdding.playerCards,
+                    pcTable: dataAfterAdding.pcCards,
+                    thrumpCard: dataAfterAdding.thrump,
+                    displayData: this.props.displayData.pcStep,
+                    playerNextStep: false
+                }));
+                break;
+            }
+            case this.props.displayData.pcStep:// robot step
+            {
+                this.pcStep();
+                /*
+                //add condition for pc and player
+                let whomeStep = this.state.playerStep == true ? false : true;
+
+                let dataAfterAdding = this.addingCardsToPartiesTables(this.state.playerTable, this.state.pcTable, this.state.cardDeck, this.state.thrumpCard);
+                this.setState(state => ({
+                    cardDeck: dataAfterAdding.deck,
+                    commonTable: [],
+                    playerTable: dataAfterAdding.playerCards,
+                    pcTable: dataAfterAdding.pcCards,
+                    thrumpCard: dataAfterAdding.thrump,
+                    displayData: this.props.displayData.pcStep,
+                    playerNextStep: false
+                }));
+                */
+                break;
+            }
+
+
+            default:
+                console.log('default ');
+        }
+
+
+        /*
         if(displayId === 'Click card for tossing or here to stop..'){
             let workingTblCards = this.state.commonTable;
             workingTblCards = [];
@@ -116,6 +190,8 @@ class MainCont extends React.Component {
             this.pcStep();
         }
 
+
+*/
         //console.log(displayId);
     }
 
@@ -187,27 +263,30 @@ class MainCont extends React.Component {
         }
         //if pc could not beat the players card, we pass all common table cards to PC table
         if(!pcAnswered) {
-            /*
-            let lengths = ["Bilbo", "Gandalf", "Nazgul"].map(item => item.length);
-            let arr = [1, 2];
-            // создать массив из: arr и [3,4]
-            alert( arr.concat([3, 4]) ); // 1,2,3,4
-            */
-            let updatedCommonTable = workingTable.map(card => card.isCoveredCard = false);
-            pcTblCards.concat(updatedCommonTable);
-            workingTable = null;
+            workingTable.forEach(function(card, index){card.isCoveredCard = false});
+            Array.prototype.push.apply(pcTblCards,workingTable);
+            workingTable = [];
+
+            console.log("pcTblCards: " + pcTblCards);
+            this.setState(state => ({
+                commonTable: workingTable,
+                pcTable: pcTblCards,
+                displayData: this.props.displayData.playerStep,
+                playerNextStep: true
+            }));
+            let dataAfterAdding = this.addingCardsToPartiesTables(this.state.playerTable, this.state.pcTable, this.state.cardDeck, this.state.thrumpCard);
+            this.setState(state => ({
+                cardDeck: dataAfterAdding.deck,
+                playerTable: dataAfterAdding.playerCards,
+                pcTable: dataAfterAdding.pcCards,
+                thrumpCard: dataAfterAdding.thrump
+            }));
         }
-
-
-        this.setState(state => ({
-            commonTable: workingTable,
-            pcTable: pcTblCards,
-            playerNextStep: true
-        }));
 
         if(pcAnswered){
             this.setState(state => ({
-                displayData: 'Click card for tossing or here to stop..'
+                displayData: this.props.displayData.playerTossing,
+                playerNextStep: true
             }));
         }
     }
@@ -216,7 +295,7 @@ class MainCont extends React.Component {
         let workingTable = commonTableCards_;
         let playerCards = playerCards_;
         let clickedCard = clickedCard_;
-
+            console.log("workingTable "+ workingTable);
         let notCoveredCardIndex = workingTable.map(e => e.isCoveredCard.toString()).indexOf('false');
         let rankIndexNotCovered = this.getCardIndex(workingTable[notCoveredCardIndex]);
         let rankIndexClicked = this.getCardIndex(clickedCard);
@@ -230,7 +309,7 @@ class MainCont extends React.Component {
             workingTable.push(clickedCard);
             let cardIndex = playerCards.map(e => e.id).indexOf(clickedCard.id);
             playerCards.splice(cardIndex, 1);
-        return {playerTable: playerCards, commonTable: workingTable};
+            return {playerTable: playerCards, commonTable: workingTable};
 
         }else{return;}
 
@@ -254,27 +333,28 @@ class MainCont extends React.Component {
         let workingTable = this.state.commonTable;
         let pcTblCards = this.state.pcTable;
         let pcSortedCards = this.sortedCards(pcTblCards);
-        let displayData = "Player's Answer!";
-        workingTable.push(pcSortedCards[0]);
-        pcSortedCards.splice(0, 1);
-        this.setState(state => ({
-            commonTable: workingTable,
-            pcTable: pcSortedCards,
-            displayData: displayData,
-            playerNextStep: true
-        }));
+        if(pcSortedCards.length > 0 && workingTable !== undefined) {
+            workingTable.push(pcSortedCards[0]);
+            pcSortedCards.splice(0, 1);
+            this.setState(state => ({
+                commonTable: workingTable,
+                pcTable: pcSortedCards,
+                displayData: this.props.displayData.playerAnswer,
+                playerNextStep: true
+            }));
+        }
     }
     addingCardsToPartiesTables(playerCardsArray_, pcCardsArray_, cardsDeck_, thrumpCard_){
         let playerCardsArray = playerCardsArray_; let pcCardsArray = pcCardsArray_; let cardsDeck = cardsDeck_; let thrumpCard = thrumpCard_;
         while(playerCardsArray.length < 6 && cardsDeck.length > 0 || pcCardsArray.length < 6 && cardsDeck.length > 0) {
             let randomCardIndex = Math.floor(Math.random() * cardsDeck.length);
-            if(cardsDeck[randomCardIndex] !== undefined) {
+            if(cardsDeck[randomCardIndex] !== undefined && playerCardsArray.length < 6) {
                 playerCardsArray.push(cardsDeck[randomCardIndex]);
                 playerCardsArray[playerCardsArray.length - 1].belongToPlayer = true;
                 cardsDeck.splice(randomCardIndex, 1);
             }
             randomCardIndex = Math.floor(Math.random() * cardsDeck.length);
-            if(cardsDeck[randomCardIndex] !== undefined) {
+            if(cardsDeck[randomCardIndex] !== undefined && pcCardsArray.length < 6) {
                 pcCardsArray.push(cardsDeck[randomCardIndex]);
                 pcCardsArray[pcCardsArray.length - 1].belongToPlayer = false;
                 cardsDeck.splice(randomCardIndex, 1);

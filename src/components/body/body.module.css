@@ -1,6 +1,8 @@
 .mainTable{
     background-color: gray;
     border: red 1px solid;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .dock{
@@ -16,8 +18,18 @@
 
 .display{
     height: 8vh;
-    font-size: 3vw;
+    font-size: 3vh;
     background-color: gainsboro;
+    text-align: center;
+    color: green;
+    font-weight: bold;
+    line-height: normal;
+    margin-left: -6.5%;
+    margin-right: -6.5%;
+    padding-bottom: 0.2%;
+    display: flex;
+    justify-content: center; /* align horizontal */
+    align-items: center; /* align vertical */
 }
 
 .stepperField{
