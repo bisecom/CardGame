@@ -4,7 +4,7 @@ export const Header = () => {
     return (
         <div className={`row h-150 ${stl.myHeader}`}>
             <div className={`col-sm-12`}>
-                <h1><span className="badge badge-warning">Underthrowable Fool</span></h1>
+                <h1><span className={`badge badge-warning ${stl.myBadge}`}>Underthrowable Fool</span></h1>
 
             </div>
 

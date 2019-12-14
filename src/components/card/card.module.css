@@ -23,3 +23,42 @@
 .belowRank{
      vertical-align: bottom;
 }
+
+
+
+
+
+p{
+     margin: 0px;
+}
+
+.aboveCardSuits, .belowCardSuits{
+     height: 2.5vh;
+}
+
+.mainCardSuits{
+     height: 6vh;
+     display:block;
+     margin-left:auto;
+     margin-right:auto;
+}
+
+.belowRank{
+     position: absolute;
+     bottom: 2%;
+     right: 7%;
+}
+
+.aboveRank{
+     margin-left: 2%;
+}
+
+.belowCardSuits{
+     position: absolute;
+     bottom: 15%;
+     right: 4%;
+}
+
+.aboveRank, .aboveCardSuits, .belowCardSuits, .belowRank{
+     flex-direction: column;
+}

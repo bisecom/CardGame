@@ -1,38 +1,58 @@
-export let cardStartDeckClosed = {
-    'width': '9vh',
-    'height': '16vh',
-    'border': 'red 2px solid',
-    'border-radius': '1vh',
-    'padding': '5px',
-    'color': 'yellow',
-    'background-color': 'lightcoral',
-    'position': 'absolute',
-    'top': '30%',
-    'font-size': '1.5vh'
 
+export let cardStartDeckClosed = {
+    'width': '11vh',
+    'height': '18vh',
+    'border': '#7A3700 1px solid',
+    'borderRadius': '1vh',
+    'padding': '5px',
+    'position': 'absolute',
+    'backgroundImage': "url('https://images2.imgbox.com/d9/ad/gvdOSNQM_o.png')",
+    'backgroundSize': '100% 100%',
+    'backgroundRepeat': 'no-repeat',
+    'top': '30%',
+    'left': '10%'
+}
+
+export let cardPCTableClosed = {
+    'width': '11vh',
+    'height': '18vh',
+    'border': '#7A3700 1px solid',
+    'borderRadius': '1vh',
+    'padding': '5px',
+    'position': 'relative',
+    'backgroundImage': "url('https://images2.imgbox.com/d9/ad/gvdOSNQM_o.png')",
+    'backgroundSize': '100% 100%',
+    'backgroundRepeat': 'no-repeat',
+    'top': '10%'
 }
 
 export let openedCardStartDeck = {
-    'width': '9vh',
-    'height': '16vh',
-    'border': 'red 2px solid',
-    'border-radius': '1vh',
+    'width': '11vh',
+    'height': '18vh',
+    'border': '#737373 1px solid',
+    'borderRadius': '1vh',
     'padding': '5px',
-    'color': 'yellow',
-    'background-color': 'lightcoral',
+    'color': 'black',
+    'fontFamily': 'Arial, Helvetica, sans-serif',
+    'fontWeight': 'bold',
+    'backgroundColor': '#e6e6e6',
+    'fontSize': '1.5vh',
     'position': 'absolute',
     'top': '30%',
-    'left': '60%',
-    'font-size': '1.5vh'
+    'left': '60%'
 }
 
-export let openedCardPlayerTable = {
-    'width': '9vh',
-    'height': '16vh',
-    'border': 'red 2px solid',
-    'border-radius': '1vh',
+export let openedCardPlayerTbl = {
+    'width': '11vh',
+    'height': '18vh',
+    'border': '#737373 1px solid',
+    'borderRadius': '1vh',
     'padding': '5px',
-    'color': 'yellow',
-    'background-color': 'lightcoral',
-    'font-size': '1.5vh'
+    'color': 'black',
+    'fontFamily': 'Arial, Helvetica, sans-serif',
+    'fontWeight': 'bold',
+    'backgroundColor': '#e6e6e6',
+    'fontSize': '1.5vh',
+    'position': 'relative',
+    'top': '10%'
 }

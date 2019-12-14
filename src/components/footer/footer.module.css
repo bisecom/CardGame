@@ -1,13 +1,13 @@
 .playerTable{
     background-color: green;
-    border: red 1px solid;
+    border: #186018	1px solid;
     display: flex;
     flex-wrap: wrap;
 }
 
 .pcTable{
-    background-color: darkolivegreen;
-    border: red 1px solid;
+    background-color: green;
+    border: #186018	1px solid;
     display: flex;
     flex-wrap: wrap;
 }

@@ -1,13 +1,13 @@
 .mainTable{
-    background-color: gray;
-    border: red 1px solid;
+    background-color: green;
+    border: #186018 1px solid;
     display: flex;
     flex-wrap: wrap;
 }
 
 .dock{
-    background-color: yellow;
-    border: red 1px solid;
+    background-color: green;
+    border: #186018 1px solid;
     position: relative;
     child-align: middle;
 }
@@ -18,14 +18,15 @@
 
 .display{
     height: 8vh;
-    font-size: 3vh;
+    font-size: 3vw;
+    font-size: 2vh;
     background-color: gainsboro;
     text-align: center;
     color: green;
     font-weight: bold;
     line-height: normal;
-    margin-left: -6.5%;
-    margin-right: -6.5%;
+    margin-left: -3.5%;
+    margin-right: -3.5%;
     padding-bottom: 0.2%;
     display: flex;
     justify-content: center; /* align horizontal */
@@ -33,9 +34,11 @@
 }
 
 .stepperField{
-
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .answererField{
-
+    display: flex;
+    flex-wrap: wrap;
 }

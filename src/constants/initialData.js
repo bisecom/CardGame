@@ -50,16 +50,24 @@ export const cardsArray = [
 export const ranksArray = ['6', '7', '8', '9', '10', 'J', 'Q','K','A'];
 
 export const displayData = {
-    greatings: "Hello! Try To Play! Click Here!",
+    greatings: "Hello! Try To Win! Click Here!",
     playStart: "Click Deck To Start!",
     playerStep: "Click Your Card To Step!",
     pcStep: "Click Here For Robot's Step!",
-    playerAnswer: "Choose Your Card To Answer!",
+    playerAnswer: "Click Your Card To Answer Or Here To Get Cards!",
     pcAnswer: "Click Here For Robot's Answer!",
     playerTossing: "Click Your Card For Tossing Or Here To Stop!",
     pcTossing: "Click Here For Robot's Tossing!",
     playerGettingCards: "Click Here If Can Not Answer..",
     pcGettingCards: "Robot's Took Cards...",
-    pcWinner: "Game Over! Robot Won the Battle!",
-    playerWinner: "Game Over! Player Won the Battle!"
+    pcWinner: "Game Over! Robot Won the Battle! Click Here To Continue..",
+    playerWinner: "Game Over! Player Won the Battle! Click Here To Continue.."
+};
+
+export const imgData = {
+  clubs: 'https://images2.imgbox.com/8a/8b/UZzpFfJP_o.png',
+    diamonds: 'https://images2.imgbox.com/8e/49/TWvy03VH_o.png',
+    hearts: 'https://images2.imgbox.com/43/dd/QNA2IswM_o.png',
+    spades: 'https://images2.imgbox.com/57/df/3KwP3zBx_o.png',
+    background:'https://images2.imgbox.com/d9/ad/gvdOSNQM_o.png'
 };
