@@ -317,6 +317,8 @@ class MainCont extends React.Component {
         let rankIndexClicked = this.getCardIndex(clickedCard);
         if(clickedCard.suits === workingTable[notCoveredCardIndex].suits && rankIndexClicked > rankIndexNotCovered ||
             clickedCard.suits === this.state.thrumpCardSuit && rankIndexClicked < rankIndexNotCovered &&
+            workingTable[notCoveredCardIndex].suits !== this.state.thrumpCardSuit ||
+            clickedCard.suits === this.state.thrumpCardSuit && rankIndexClicked >= rankIndexNotCovered &&
             workingTable[notCoveredCardIndex].suits !== this.state.thrumpCardSuit){
             workingTable[notCoveredCardIndex].isCoveredCard = true; workingTable[notCoveredCardIndex].belongToPlayer = false;
             clickedCard.isCoveredCard = true; clickedCard.belongToPlayer = false;
